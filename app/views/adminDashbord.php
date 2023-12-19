@@ -2,8 +2,22 @@
 require_once($_SERVER['DOCUMENT_ROOT']."/brief8/app/Models/userClass.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/brief8/app/Models/repositories/datacnx.php");
 require_once ($_SERVER["DOCUMENT_ROOT"]."/brief8/app/config/config.php"); 
-?>
 
+session_start();
+ob_start();
+
+require_once($_SERVER['DOCUMENT_ROOT']."/brief8/app/Models/userClass.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/brief8/app/Models/repositories/datacnx.php");
+require_once ($_SERVER["DOCUMENT_ROOT"]."/brief8/app/config/config.php");
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_info'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user = $_SESSION['user_info'];
+?>
 
 
 
@@ -154,7 +168,7 @@ Heroicon name: outline/x" x-state:on="Menu open" x-state:off="Menu closed" class
           <div class="mt-6 sm:flex-1 sm:min-w-0 sm:flex sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
             <div class="sm:hidden md:block mt-6 min-w-0 flex-1">
               <h1 class="text-2xl font-bold text-gray-900 truncate">
-               WALID LHAILA
+               <?php echo $user['prenom']; ?> <?php echo $user['nom']; ?>
               </h1>
             </div>
             <div class="mt-6 flex flex-col justify-stretch space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">

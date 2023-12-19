@@ -2,6 +2,35 @@
 require_once($_SERVER['DOCUMENT_ROOT']."/brief8/app/Models/userClass.php");
 require_once($_SERVER['DOCUMENT_ROOT']."/brief8/app/Models/repositories/datacnx.php");
 require_once ($_SERVER["DOCUMENT_ROOT"]."/brief8/app/config/config.php"); 
+
+session_start();
+ob_start();
+
+require_once($_SERVER['DOCUMENT_ROOT']."/brief8/app/Models/userClass.php");
+require_once($_SERVER['DOCUMENT_ROOT']."/brief8/app/Models/repositories/datacnx.php");
+require_once ($_SERVER["DOCUMENT_ROOT"]."/brief8/app/config/config.php");
+
+// Check if the user is logged in
+if (!isset($_SESSION['user_info'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user = $_SESSION['user_info'];
+if (isset($_SESSION['user_info']) && $_SESSION['user_info']['role'] == 'Client') {
+  $client = $_SESSION['user_info'];
+  
+  // Fetch the client's account information
+  $clientId = $client['id'];
+  $accountQuery = "SELECT balance, devise, rib FROM account WHERE user_id = '$clientId'";
+  $accountResult = $cnx->query($accountQuery);
+
+  if ($accountResult->num_rows > 0) {
+      $clientAccount = $accountResult->fetch_assoc();
+  }
+}
+
+
 ?>
 
 
@@ -137,8 +166,8 @@ require_once ($_SERVER["DOCUMENT_ROOT"]."/brief8/app/config/config.php");
                       <button type="button" class="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" @click="toggle">
                         <span class="sr-only">Close menu</span>
                         <svg class="h-6 w-6" x-description="Heroicon name: outline/x" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-</svg>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
                       </button>
                     </div>
                   </div>
@@ -194,7 +223,36 @@ require_once ($_SERVER["DOCUMENT_ROOT"]."/brief8/app/config/config.php");
               <div class="rounded-lg bg-white overflow-hidden shadow">
                 <div class="p-6">
                   <x-placeholder>
-                    <div class="h-48 border-4 border-dashed border-cyan-900 rounded-lg">
+                    <div class="h-48 border-4  border-dashed border-cyan-900 rounded-lg">
+                    <h1 class="flex justify-center py-2 font-bold text-orange-600 text-lg ">USER TRANSACTION</h1>
+                       <div class="flex flex-col justify-center items-center">
+                       <?php if (isset($clientAccount)): ?>
+                          <table class="w-[80%] text-center text-sm text-left rtl:text-right text-gray-200 dark:text-gray-200">
+                          <thead class="text-xs text-center text-gray-700 uppercase bg-gray-50 dark:bg-cyan-900 dark:text-gray-200">
+                              <tr>
+                                  <th scope="col" class="px-6 py-3">
+                                      BALANCE
+                                  </th>
+                                  <th scope="col" class="px-6 py-3">
+                                      DEVISE
+                                  </th>
+                                  <th scope="col" class="px-6 py-3">
+                                      RIB
+                                  </th>
+                              </tr>
+                          </thead>
+                          <tbody class="text-black dark:bg-gray-200">
+                          
+                              <tr>
+                                  <td><?php echo $clientAccount['balance'];?></td>
+                                  <td><?php echo $clientAccount['devise'];?></td>
+                                  <td><?php echo $clientAccount['rib']; ?></td>
+                              </tr>
+                          
+                          </tbody>
+                          </table>
+                          <?php endif; ?>
+                    </div>
 
 
 
@@ -215,11 +273,18 @@ require_once ($_SERVER["DOCUMENT_ROOT"]."/brief8/app/config/config.php");
                   <x-placeholder>
                     <div class="h-48 border-4 border-dashed border-cyan-900 rounded-lg">
                       <div class="px-5 py-2 font-bold" id="info">
+                        <h1 class="flex justify-center text-orange-600 text-lg ">USER INFORMATION</h1>
+
+                        <p class="mt-2">Nom: <?php echo $user['nom']; ?></p>
+                        <p>Prenom: <?php echo $user['prenom']; ?></p>
+                        <p>Naissance: <?php echo $user['naissance']; ?></p>
+                        <p>Nationalite: <?php echo $user['nationalite']; ?></p>
+                        <p>Genre: <?php echo $user['genre']; ?></p7>
                       
 
 
 
-                      </div>
+                      </9div>
                     </div>
                   </x-placeholder>
                 </div>
