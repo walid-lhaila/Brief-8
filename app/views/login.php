@@ -23,11 +23,11 @@ if (isset($_POST['login'])) {
         $user = $result->fetch_assoc();
 
         if ($user['role'] == 'Admin') {
-            // $_SESSION['user_info'] = $user;
+            $_SESSION['user_info'] = $user;
             header("Location: adminDashbord.php");
             exit();
         } elseif ($user['role'] == 'Client') {
-            // $_SESSION['user_info'] = $user;
+            $_SESSION['user_info'] = $user;
             header("Location: ClientDashboard.php");
             exit();
         }

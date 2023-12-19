@@ -194,8 +194,13 @@ require_once ($_SERVER["DOCUMENT_ROOT"]."/brief8/app/config/config.php");
               <div class="rounded-lg bg-white overflow-hidden shadow">
                 <div class="p-6">
                   <x-placeholder>
-                    <div class="h-96 border-4 border-dashed border-gray-200 rounded-lg"></div>
+                    <div class="h-48 border-4 border-dashed border-cyan-900 rounded-lg">
+
+
+
+                    </div>
                   </x-placeholder>
+              
                 </div>
               </div>
             </section>
@@ -208,15 +213,13 @@ require_once ($_SERVER["DOCUMENT_ROOT"]."/brief8/app/config/config.php");
               <div class="rounded-lg bg-white overflow-hidden shadow">
                 <div class="p-6">
                   <x-placeholder>
-                    <div class="h-96 border-4 border-dashed border-gray-200 rounded-lg">
-                     
+                    <div class="h-48 border-4 border-dashed border-cyan-900 rounded-lg">
+                      <div class="px-5 py-2 font-bold" id="info">
+                      
 
 
 
-
-
-                    
-
+                      </div>
                     </div>
                   </x-placeholder>
                 </div>
